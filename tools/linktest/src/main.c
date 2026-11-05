@@ -23,7 +23,7 @@
 #include <ti/getcsc.h>
 #include <ti/screen.h>
 
-#define VERSION "v1"
+#define VERSION "v0.1"
 
 #define PING_COUNT      500
 #define EXCHANGE_COUNT  1000

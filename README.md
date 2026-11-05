@@ -1,3 +1,41 @@
+# tiboyce-link
+
+**A fork of [TI-Boy CE](https://github.com/calc84maniac/tiboyce) by calc84maniac that adds Game Boy link cable support over USB between two TI-84 Plus CE / TI-83 Premium CE calculators — e.g. for trading and battling in Pokémon.**
+
+> ⚠️ **Work in progress.** Link support is not in the emulator yet. Right now this repo contains a USB test program (LINKTEST) to check that two calculators can talk to each other fast enough. The emulator itself is still the unmodified TI-Boy CE.
+
+## Status
+
+| Step | What | Status |
+|---|---|---|
+| 1 | LINKTEST: calc-to-calc USB test (latency + Game Boy–style byte exchange) | ✅ Written, waiting for hardware results |
+| 2 | Hook the emulated Game Boy serial port up to USB | ⏳ Not started |
+| 3 | Test trading in Pokémon Gold/Silver/Crystal | ⏳ Not started |
+
+## How it will work
+
+A real Game Boy link cable needs both consoles to be perfectly in sync, which a calculator can't manage over USB while also emulating a Game Boy. tiboyce-link gets around this by syncing **per byte instead of per clock cycle**: when the game sends a byte, the emulator sends it over USB and only finishes the emulated transfer once the other calculator's byte has arrived. To the game the link cable just looks a little slower. Pokémon's link protocol doesn't care about that, so trading should still work.
+
+## Try the link test (LINKTEST)
+
+You need two calculators that can run TI-Boy CE, and a **USB mini-A ↔ mini-B cable** (TI's unit-to-unit cable or an OTG adapter + cable). A mini-B ↔ mini-B cable will not work.
+
+1. Download `LINKTEST.8xp` and `clibs.8xg` from the [Releases](../../releases) page.
+2. Send both files to **both** calculators with TI Connect CE.
+3. Connect the cable and start LINKTEST on both calculators, the same way you start TI-Boy CE (e.g. via arTIfiCE/Cesium).
+4. The calculator with the **mini-A** plug becomes **HOST**. When it says *Connected*, press **ENTER** on the host.
+5. After a few seconds the results appear on the host: ping time (min/avg/max), µs per byte, and errors on both calculators. **CLEAR** quits.
+
+Please report your results (or a photo of the host screen) in an issue. More details and build instructions are in [tools/linktest](tools/linktest).
+
+## Credits
+
+All emulator code is by calc84maniac and the TI-Boy CE contributors, released under GPLv3 — see below for the original documentation. The link test is based on the `link_library` example from the [CE C toolchain](https://github.com/CE-Programming/toolchain).
+
+---
+
+*Original TI-Boy CE README follows.*
+
 # TI-Boy CE
 
 [![Build Status](https://github.com/calc84maniac/tiboyce/actions/workflows/ci.yml/badge.svg)](https://github.com/calc84maniac/tiboyce/actions/workflows/ci.yml)
